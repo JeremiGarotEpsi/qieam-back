@@ -1,0 +1,33 @@
+image: maven:3.5.4-jdk-8
+
+services:
+ - postgres:latest
+
+variables:
+ POSTGRES_DB: qieam
+ POSTGRES_USER: gael
+ POSTGRES_PASSWORD: ""
+
+unit_test:
+ stage: test
+ script:
+  - export DATABASE_URL_TEST=postgres://gael:@postgres:5432/qieam
+  - mvn clean test
+ except:
+  - release
+
+deploy_heroku:
+ stage: deploy
+ script:
+  - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/qieam-api.git
+  - git push heroku +HEAD:release
+ only:
+  - release
+
+deploy_heroku_dev:
+ stage: deploy
+ script:
+  - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/qieam-api-dev.git
+  - git push heroku +HEAD:dev
+ only:
+  - dev
