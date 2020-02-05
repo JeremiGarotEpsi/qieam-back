@@ -25,8 +25,6 @@ public class AuthenticationFilter implements Filter {
     public AuthenticationFilter(String role) {
         this.role = role;
     }
-    
-    
 
     @Override
     public void handle(Request request, Response response) throws Exception {
@@ -44,6 +42,7 @@ public class AuthenticationFilter implements Filter {
                 if (!currentUser.hasRole(role)) {
                     halt(401);
                 }
+                LOGGER.log(Level.INFO, String.format("Authenticated %s", username));
             } catch (AuthenticationException ex) {
                 LOGGER.log(Level.WARNING, String.format("Unable to authenticate user %s", username), ex);
                 response.header("WWW-Authenticate", "Basic");
