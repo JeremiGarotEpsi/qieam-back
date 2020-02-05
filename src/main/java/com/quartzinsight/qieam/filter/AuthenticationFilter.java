@@ -42,13 +42,13 @@ public class AuthenticationFilter implements Filter {
                 if (!currentUser.hasRole(role)) {
                     halt(401);
                 }
-                LOGGER.log(Level.INFO, String.format("Authenticated %s", username));
             } catch (AuthenticationException ex) {
                 LOGGER.log(Level.WARNING, String.format("Unable to authenticate user %s", username), ex);
                 response.header("WWW-Authenticate", "Basic");
                 halt(401);
             }
         }
+        LOGGER.log(Level.INFO, String.format("Authenticated %s", username));
     }
 
     private String getAuthorizationHeader(Request request) {
