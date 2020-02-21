@@ -43,7 +43,7 @@ public class Qieam {
 
         JsonTransformer jsonTransformer = new JsonTransformer();
 
-        before("/api/*", new AuthenticationFilter("admin"));
+        before("/api/*", new AuthenticationFilter());
 
         path("/api", () -> {
             get("/library/games", APP_JSON, libraryController.getGames, jsonTransformer);

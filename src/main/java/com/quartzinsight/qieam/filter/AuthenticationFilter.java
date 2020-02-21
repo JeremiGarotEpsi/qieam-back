@@ -20,10 +20,8 @@ import static spark.Spark.halt;
 public class AuthenticationFilter implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
-    private final String role;
 
-    public AuthenticationFilter(String role) {
-        this.role = role;
+    public AuthenticationFilter() {
     }
 
     @Override
@@ -39,9 +37,6 @@ public class AuthenticationFilter implements Filter {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             try {
                 currentUser.login(token);
-                if (!currentUser.hasRole(role)) {
-                    halt(401);
-                }
             } catch (AuthenticationException ex) {
                 LOGGER.log(Level.WARNING, String.format("Unable to authenticate user %s", username), ex);
                 response.header("WWW-Authenticate", "Basic");
