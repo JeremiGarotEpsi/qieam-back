@@ -7,6 +7,9 @@ variables:
  POSTGRES_DB: qieam
  POSTGRES_USER: gael
  POSTGRES_PASSWORD: ""
+ SONAR_TOKEN: "4d04931fdfdc4c26d92cdca1de8b9749d3d57a06"
+ SONAR_HOST_URL: "https://code-quality.argonaultes.com"
+ GIT_DEPTH: 0
 
 unit_test:
  stage: test
@@ -31,3 +34,11 @@ deploy_heroku_dev:
   - git push heroku +HEAD:dev
  only:
   - dev
+
+codequality:
+  script:
+    - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  only:
+    - merge_request
+    - master
