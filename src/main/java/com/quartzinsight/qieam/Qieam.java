@@ -16,6 +16,7 @@ import org.apache.shiro.realm.text.IniRealm;
 import static spark.Spark.after;
 import static spark.Spark.before;
 import static spark.Spark.get;
+import static spark.Spark.options;
 import static spark.Spark.path;
 import static spark.Spark.port;
 
@@ -42,6 +43,18 @@ public class Qieam {
         FriendController friendController = new FriendController(useJdbc);
 
         JsonTransformer jsonTransformer = new JsonTransformer();
+
+        options("/*", (request, response) -> {
+            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+            if (accessControlRequestHeaders != null)
+                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+
+            String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+            if (accessControlRequestMethod != null)
+                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+
+            return "OK";
+        });
 
         before("/api/*", new AuthenticationFilter());
 
