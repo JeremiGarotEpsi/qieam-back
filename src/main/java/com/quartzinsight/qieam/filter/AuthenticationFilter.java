@@ -26,24 +26,26 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void handle(Request request, Response response) throws Exception {
-        Subject currentUser = SecurityUtils.getSubject();
-        final String authorizationHeader = getAuthorizationHeader(request);
-        final String encodedAuth = getEncodedAuth(authorizationHeader);
-        final String credentials = decodeAuth(encodedAuth);
-        final String[] usernamePassword = splitCredentials(credentials);
-        final String username = usernamePassword[0];
-        final String password = usernamePassword[1];
-        if (!currentUser.isAuthenticated()) {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            try {
-                currentUser.login(token);
-            } catch (AuthenticationException ex) {
-                LOGGER.log(Level.WARNING, String.format("Unable to authenticate user %s", username), ex);
-                response.header("WWW-Authenticate", "Basic");
-                halt(401);
+        if (!"OPTIONS".equals(request.requestMethod())) {
+            Subject currentUser = SecurityUtils.getSubject();
+            final String authorizationHeader = getAuthorizationHeader(request);
+            final String encodedAuth = getEncodedAuth(authorizationHeader);
+            final String credentials = decodeAuth(encodedAuth);
+            final String[] usernamePassword = splitCredentials(credentials);
+            final String username = usernamePassword[0];
+            final String password = usernamePassword[1];
+            if (!currentUser.isAuthenticated()) {
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                try {
+                    currentUser.login(token);
+                } catch (AuthenticationException ex) {
+                    LOGGER.log(Level.WARNING, String.format("Unable to authenticate user %s", username), ex);
+                    response.header("WWW-Authenticate", "Basic");
+                    halt(401);
+                }
             }
+            LOGGER.log(Level.INFO, String.format("Authenticated %s", username));
         }
-        LOGGER.log(Level.INFO, String.format("Authenticated %s", username));
     }
 
     private String getAuthorizationHeader(Request request) {
