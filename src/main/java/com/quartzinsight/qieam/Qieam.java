@@ -56,6 +56,7 @@ public class Qieam {
             return "OK";
         });
 
+        before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
         before("/api/*", new AuthenticationFilter());
 
         path("/api", () -> {
