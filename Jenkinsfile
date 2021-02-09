@@ -16,6 +16,7 @@ pipeline {
     stage('Integration test') {
       steps {
         sh 'mvn test'
+        junit '*.xml'
       }
     }
 
