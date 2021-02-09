@@ -22,7 +22,7 @@ pipeline {
 
     stage('Sonar') {
       steps {
-        sh 'mvn verify sonar:sonar -Dsonar.qualitygate.wait=true -Dsonar.login=cf878d3201bc4f1bf2a9c4d9a3a70e7359fff8dd'
+        sh 'mvn verify sonar:sonar -Dsonar.qualitygate.wait=true -Dsonar.login=cf878d3201bc4f1bf2a9c4d9a3a70e7359fff8dd -Dsonar.host.url=http://192.168.1.18:9000'
       }
     }
 
