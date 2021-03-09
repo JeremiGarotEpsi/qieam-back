@@ -8,6 +8,7 @@ package com.quartzinsight.qieam.controller;
 import com.quartzinsight.qieam.persistence.db.LibraryDaoInPgSql;
 import com.quartzinsight.qieam.persistence.mem.LibraryDaoInMem;
 import com.quartzinsight.qieam.service.LibraryService;
+import io.prometheus.client.Counter;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -15,6 +16,8 @@ import spark.Route;
 public class LibraryController {
 
     public final Route getGames;
+    static final Counter requests = Counter.build()
+            .name("requests_total_library").help("Total requests library.").register();
 
     private final LibraryService libraryService;
     private static final String env = "DATABASE_URL";
@@ -27,6 +30,7 @@ public class LibraryController {
         }
 
         getGames = (Request request, Response response) -> {
+            requests.inc();
             return libraryService.getGames();
         };
 

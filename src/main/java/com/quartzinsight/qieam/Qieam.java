@@ -10,9 +10,13 @@ import com.quartzinsight.qieam.controller.StoreController;
 import com.quartzinsight.qieam.controller.LibraryController;
 import com.quartzinsight.qieam.filter.AuthenticationFilter;
 import com.quartzinsight.qieam.filter.TerminateAuthenticationFilter;
+import io.prometheus.client.exporter.HTTPServer;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.realm.text.IniRealm;
+
+import java.io.IOException;
+
 import static spark.Spark.after;
 import static spark.Spark.before;
 import static spark.Spark.get;
@@ -24,7 +28,7 @@ public class Qieam {
 
     private static final String APP_JSON = "application/json";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         IniRealm realm = new IniRealm("classpath:shiro.ini");
         DefaultSecurityManager securityManager = new DefaultSecurityManager(realm);
@@ -68,6 +72,7 @@ public class Qieam {
         });
         after(new TerminateAuthenticationFilter());
 
+        HTTPServer server = new HTTPServer(1234);
     }
 
 }

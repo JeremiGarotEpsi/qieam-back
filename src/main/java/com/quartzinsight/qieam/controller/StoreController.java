@@ -8,6 +8,7 @@ package com.quartzinsight.qieam.controller;
 import com.quartzinsight.qieam.persistence.db.StoreDaoInPgSql;
 import com.quartzinsight.qieam.persistence.mem.StoreDaoInMem;
 import com.quartzinsight.qieam.service.StoreService;
+import io.prometheus.client.Counter;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -15,6 +16,8 @@ import spark.Route;
 public class StoreController {
 
     public final Route getGames;
+    static final Counter requests = Counter.build()
+            .name("requests_total_store").help("Total requests store.").register();
 
     private final StoreService storeService;
     private static final String env = "DATABASE_URL";
@@ -27,6 +30,7 @@ public class StoreController {
         }
 
         getGames = (Request request, Response response) -> {
+            requests.inc();
             return storeService.getGames();
         };
 

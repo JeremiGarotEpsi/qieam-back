@@ -8,6 +8,7 @@ package com.quartzinsight.qieam.controller;
 import com.quartzinsight.qieam.service.FriendService;
 import com.quartzinsight.qieam.persistence.mem.FriendDaoInMem;
 import com.quartzinsight.qieam.persistence.db.FriendDaoInPgSql;
+import io.prometheus.client.Counter;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -15,6 +16,8 @@ import spark.Route;
 public class FriendController {
 
     public final Route getFriends;
+    static final Counter requests = Counter.build()
+            .name("requests_total_friends").help("Total requests friends.").register();
 
     private final FriendService friendService;
     private static final String env = "DATABASE_URL";
@@ -27,6 +30,7 @@ public class FriendController {
         }
 
         getFriends = (Request request, Response response) -> {
+            requests.inc();
             return friendService.getFriends();
         };
 
