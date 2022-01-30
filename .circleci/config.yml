@@ -30,10 +30,10 @@ jobs:
    machine: true
    steps:
      - checkout
-     # start proprietary DB using private Docker image
-     # with credentials stored in the UI
-     - run: |
-        docker login --username "$DOCKER_USER" --password "$DOCKER_PASS"
+     - run:
+         name: Build
+         command: mvn -B -DskipTests clean package
+     - run: docker login --username "$DOCKER_USER" --password "$DOCKER_PASS"
 
      # build the application image
      - run: docker build -t qi/qieam:$CIRCLE_BRANCH .
