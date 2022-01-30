@@ -39,7 +39,7 @@ jobs:
      - run: docker build -t qi/qieam:$CIRCLE_BRANCH .
 
      # deploy the image
-     - run: docker push qi/qieam:$CIRCLE_BRANCH
+     - run: docker push $DOCKER_USER/qieam:$CIRCLE_BRANCH
   
 
 # Invoke jobs via workflows
