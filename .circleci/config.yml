@@ -33,7 +33,7 @@ jobs:
      # start proprietary DB using private Docker image
      # with credentials stored in the UI
      - run: |
-         echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+        docker login --username "$DOCKER_USER" --password "$DOCKER_PASS"
 
      # build the application image
      - run: docker build -t qi/qieam:$CIRCLE_BRANCH .
