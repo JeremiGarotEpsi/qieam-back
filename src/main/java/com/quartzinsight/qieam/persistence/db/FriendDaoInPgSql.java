@@ -49,4 +49,17 @@ public class FriendDaoInPgSql implements FriendService {
         return friends;
     }
 
+    @Override
+    public Friend createFriend(String friendName) {
+        return null;
+    }
+
+    @Override
+    public Friend deleteFriend(String friendName) {
+        return null;
+    }
+    
+    
+    
+
 }

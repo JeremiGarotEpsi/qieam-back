@@ -19,10 +19,12 @@ import java.io.IOException;
 
 import static spark.Spark.after;
 import static spark.Spark.before;
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.options;
 import static spark.Spark.path;
 import static spark.Spark.port;
+import static spark.Spark.post;
 
 public class Qieam {
 
@@ -33,11 +35,8 @@ public class Qieam {
         IniRealm realm = new IniRealm("classpath:shiro.ini");
         DefaultSecurityManager securityManager = new DefaultSecurityManager(realm);
         SecurityUtils.setSecurityManager(securityManager);
-        boolean useJdbc = false;
-        String useJdbcEnv = System.getenv("USE_JDBC");
-        if (useJdbcEnv != null) {
-            useJdbc = Boolean.parseBoolean(useJdbcEnv);
-        }
+        String useJdbcEnv = System.getenv().getOrDefault("USE_JDBC", "false");
+        boolean useJdbc = Boolean.parseBoolean(useJdbcEnv);
         String customPort = System.getenv("PORT");
         if (customPort != null) {
             port(Integer.parseInt(customPort));
@@ -69,6 +68,10 @@ public class Qieam {
             get("/store/games", APP_JSON, storeController.getGames, jsonTransformer);
 
             get("/friends", APP_JSON, friendController.getFriends, jsonTransformer);
+            
+            post("/friend", APP_JSON, friendController.createFriend, jsonTransformer);
+            
+            delete("/friend", APP_JSON, friendController.deleteFriend, jsonTransformer);
         });
         after(new TerminateAuthenticationFilter());
 

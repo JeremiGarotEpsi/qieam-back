@@ -16,6 +16,9 @@ import spark.Route;
 public class FriendController {
 
     public final Route getFriends;
+    public final Route createFriend;
+    public final Route deleteFriend;
+    
     static final Counter requests = Counter.build()
             .name("requests_total_friends").help("Total requests friends.").register();
 
@@ -32,6 +35,16 @@ public class FriendController {
         getFriends = (Request request, Response response) -> {
             requests.inc();
             return friendService.getFriends();
+        };
+        
+        createFriend = (Request request, Response response) -> {
+            final String friendName = request.queryParams("name");
+            return friendService.createFriend(friendName);
+        };
+        
+        deleteFriend = (Request request, Response response) -> {
+            final String friendName = request.queryParams("name");
+            return friendService.deleteFriend(friendName);
         };
 
     }

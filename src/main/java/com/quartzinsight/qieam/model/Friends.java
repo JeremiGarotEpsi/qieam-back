@@ -18,4 +18,8 @@ public class Friends {
     public List<Friend> getFriends() {
         return Collections.unmodifiableList(friends);
     }
+    
+    public void deleteFriend(Friend friend) {
+        friends.remove(friend);
+    }
 }
