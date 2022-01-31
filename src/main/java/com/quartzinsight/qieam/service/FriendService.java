@@ -5,9 +5,14 @@
  */
 package com.quartzinsight.qieam.service;
 
+import com.quartzinsight.qieam.model.Friend;
 import com.quartzinsight.qieam.model.Friends;
 
 public interface FriendService {
 
     public Friends getFriends();
+    
+    public Friend createFriend(String friendName);
+    
+    public Friend deleteFriend(String friendName);
 }

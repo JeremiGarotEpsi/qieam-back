@@ -8,6 +8,7 @@ package com.quartzinsight.qieam.persistence.mem;
 import com.quartzinsight.qieam.model.Friend;
 import com.quartzinsight.qieam.model.Friends;
 import com.quartzinsight.qieam.service.FriendService;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +26,11 @@ public class FriendDaoInMem implements FriendService {
         friends.addFriend(new Friend("Minerva"));
     }
 
+    public static FriendDaoInMem resetInstance() {
+        instance = new FriendDaoInMem();
+        return instance;
+    }
+
     public static FriendDaoInMem getInstance() {
         if (instance == null) {
             instance = new FriendDaoInMem();
@@ -36,6 +42,23 @@ public class FriendDaoInMem implements FriendService {
     public Friends getFriends() {
         LOGGER.log(Level.INFO, "Get friends");
         return friends;
+    }
+
+    @Override
+    public Friend createFriend(String friendName) {
+        LOGGER.log(Level.INFO, "Create friend {0}", friendName);
+        Friend friend = new Friend(friendName);
+        friends.addFriend(friend);
+        return friend;
+    }
+
+    @Override
+    public Friend deleteFriend(String friendName) {
+        LOGGER.log(Level.INFO, "Delete friend {0}", friendName);
+        Optional<Friend> friendToDelete = friends.getFriends().stream().filter(friend -> friendName.equalsIgnoreCase(friend.getName())).findFirst();
+        Friend friend = friendToDelete.orElse(new Friend(""));
+        friends.deleteFriend(friend);
+        return friend;
     }
 
 }

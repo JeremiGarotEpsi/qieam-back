@@ -106,7 +106,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.quartzinsight.qieam-api.Qieam</mainClass>
+                            <mainClass>com.quartzinsight.qieam.Qieam</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
