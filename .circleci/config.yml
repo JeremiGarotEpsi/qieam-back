@@ -36,10 +36,11 @@ jobs:
      - run: docker login --username "$DOCKER_USER" --password "$DOCKER_PASS"
 
      # build the application image
-     - run: docker build -t $DOCKER_USER/qieam:$CIRCLE_BRANCH .
+     - run: docker build -t $DOCKER_USER/qieam:latest .
 
      # deploy the image
-     - run: docker push $DOCKER_USER/qieam:$CIRCLE_BRANCH
+     - run: docker push $DOCKER_USER/qieam:latest
+     - run: ssh azureuser@13.68.233.64 -c "docker run --rm --name qieam-back -d gaelroustanepsi2022/qieam:latest"
   
 
 # Invoke jobs via workflows
