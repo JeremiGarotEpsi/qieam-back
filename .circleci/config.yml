@@ -33,5 +33,6 @@ workflows:
     jobs:
       - build-and-test
       - build-docker
+    main:
       - build:
           context: SonarCloud
