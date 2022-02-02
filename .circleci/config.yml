@@ -26,7 +26,7 @@ jobs:
       - run: docker build -t $DOCKER_USER/qieam:latest .
 
       - run: docker push $DOCKER_USER/qieam:latest
-      - run: ssh azureuser@40.115.3.23 "(docker stop qieam-back || true) && (docker rm -f qieam-back || true) && (docker run --rm --name qieam-back -d -p 4567:4567 gaelroustanepsi2022/qieam:latest)"
+      - run: ssh azureuser@20.126.120.69 "(docker stop qieam-back || true) && (docker rm -f qieam-back || true) && (docker run --rm --name qieam-back -d -p 4567:4567 gaelroustanepsi2022/qieam:latest)"
 
 workflows:
   sample:
